@@ -6,6 +6,7 @@ const router = express.Router();
 
 router.post("/register", (req, res) => {
   const user = req.body;
+  console.log(userValidator(user))
   if (userValidator(user).errors.length > 0) {
     res
       .status(400)
