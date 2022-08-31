@@ -1,5 +1,5 @@
-import { userSchema } from "./userSchema.js";
-import { todoSchema, todoCategorySchema } from "./todoSchema.js";
+import { userSchema } from "./schema/userSchema.js";
+import { todoSchema, todoCategorySchema } from "./schema/todoSchema.js";
 import jsonschema from "jsonschema";
 
 var validator = new jsonschema.Validator();

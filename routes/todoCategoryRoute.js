@@ -1,24 +1,24 @@
 import express from "express";
-import databaseConnection from "../connection.js";
-import { todoCategoryValidator } from "../middleware/validater.js";
+
 import {
   patchCategory,
   deleteCategory,
   getByUserId,
   create,
 } from "../controllers/todoCategoryController.js";
+import { validateToken } from "../middleware/auth/userAuth.js";
 
 const router = express.Router();
 
-router.post("/create", create);
+router.post("/create", validateToken, create);
 
-router.get("/:user_id", getByUserId);
+router.get("/", validateToken, getByUserId);
 
 // UPDATE table_name
 // SET column1 = value1, column2 = value2, ...
 // WHERE condition;
-router.delete("/:id/:user_id", deleteCategory);
+router.delete("/:id", validateToken, deleteCategory);
 
-router.patch("/:id/:user_id", patchCategory);
+router.patch("/:id", validateToken, patchCategory);
 
 export default router;

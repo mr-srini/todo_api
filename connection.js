@@ -10,6 +10,7 @@ const databaseConnection = mysql.createConnection({
   database: process.env.DATABASE,
 });
 
+
 databaseConnection.connect((error, result) => {
   if (error) console.log(error);
   else console.log(`CONNECTED TO DB`);
