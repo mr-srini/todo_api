@@ -34,7 +34,6 @@ export const login = (req, res) => {
   databaseConnection.query(
     `Select * from user where user.email = '${decodedEmailPassword[0]}'`,
     (error, result) => {
-      console.log(error)
       if (error) res.status(400).send({ status: "failed", error: error });
       else {
         if (result.length == 0) {
