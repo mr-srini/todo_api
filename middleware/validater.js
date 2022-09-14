@@ -8,5 +8,4 @@ export const userValidator = (schema) => validator.validate(schema, userSchema);
 
 export const todoValidator = (schema) => validator.validate(schema, todoSchema);
 
-export const todoCategoryValidator = (schema) =>
-  validator.validate(schema, todoCategorySchema);
+export const todoCategoryValidator = (schema) => validator.validate(schema, todoCategorySchema);

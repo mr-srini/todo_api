@@ -5,15 +5,16 @@ import {
 } from "../middleware/auth/userAuth.js";
 import { userValidator } from "../middleware/validater.js";
 import { genSaltSync, hashSync, compareSync } from "bcrypt";
-import jsonschema from "jsonwebtoken";
+import jsonWebToken from "jsonwebtoken";
 import dotenvConfigOptions from "dotenv";
+import e from "express";
 
 dotenvConfigOptions.config();
 
-export const register = (req, res) => {
+export const register = (req, response) => {
   const user = req.body;
   if (userValidator(user).errors.length > 0) {
-    res
+    response
       .status(400)
       .send({ error: [userValidator(user).errors], status: "failed" });
   } else {
@@ -21,9 +22,22 @@ export const register = (req, res) => {
     user.password = hashSync(user.password, genSaltSync());
     databaseConnection.query(
       `INSERT INTO user (username, email, password) VALUES ('${user.username}', '${user.email}', '${user.password}')`,
-      (error, result) => {
-        if (error) res.status(400).send({ status: "failed", error: error });
-        else res.status(200).send({ status: "success", result: result });
+      (err, res) => {
+        if (err) response.status(400).send({ status: "failed", error: err });
+        else {
+          databaseConnection.query(
+            `SELECT user.id,user.email, user.username  FROM user where user.email='${user.email}'`,
+            (error, result) => {
+              if (error)
+                response.status(400).send({ status: "failed", error: error });
+              else {
+                response
+                  .status(200)
+                  .send({ status: "success", result: result });
+              }
+            }
+          );
+        }
       }
     );
   }
@@ -48,10 +62,12 @@ export const login = (req, res) => {
               hashPassword: result[0].password,
             })
           ) {
-            const token = jsonschema.sign(
+            const token = jsonWebToken.sign(
               { userid: result[0].id },
               process.env.JWT_TOKEN,
-              { expiresIn: "1h" }
+              {
+                expiresIn: "1h",
+              }
             );
             res.status(200).send({ status: "success", data: { token: token } });
           } else {

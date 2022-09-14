@@ -1,5 +1,4 @@
 import express from "express";
-import bodyParser from "body-parser";
 import dotenvConfigOptions from "dotenv";
 import userRoutes from "./routes/userRoutes.js";
 import todoRoutes from "./routes/todoRoutes.js";
@@ -9,7 +8,7 @@ import todoCategoryRoute from "./routes/todoCategoryRoute.js";
 const app = express();
 
 // Setting Middleware to accept JSON type object(s)
-app.use(bodyParser.json());
+app.use(express.json());
 
 // API routes
 app.use("/user", userRoutes);
