@@ -51,7 +51,8 @@ export const getByUserId = (req, res) => {
     on t.category_id = c.id
     join status as s
     on t.status_id = s.id
-    where t.user_id = ${decodeToken(req)}`,
+    where t.user_id = ${decodeToken(req)}
+    and t.is_active = 1`,
     (error, result) => {
       if (error) res.status(400).send({ status: "failed", error: error });
       else res.send({ data: result, status: "success" });
